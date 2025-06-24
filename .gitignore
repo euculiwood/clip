@@ -16,3 +16,5 @@ wandb/
 
 # 忽略 Jupyter Notebook 检查点
 .ipynb_checkpoints/
+astrodino/preweight/teacher_checkpoint.zip
+astrodino/preweight/teacher_checkpoint.pth

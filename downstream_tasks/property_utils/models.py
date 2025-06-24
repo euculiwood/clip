@@ -10,7 +10,7 @@ from sklearn.neighbors import KNeighborsRegressor
 from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
 from tqdm import tqdm
-
+from typing import List
 
 def few_shot(
     model: nn.Module,
@@ -18,7 +18,7 @@ def few_shot(
     y_train: ndarray,
     X_test: ndarray,
     max_epochs: int = 10,
-    hidden_dims: list[int] = [64, 64],
+    hidden_dims: List[int] = [64, 64],
     lr: float = 1e-3,
 ) -> ndarray:
     """Train a few-shot model using a simple neural network"""
