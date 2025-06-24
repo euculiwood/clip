@@ -1,9 +1,16 @@
 # AstroDino 训练脚本
 # 基于 DINOv2 训练框架实现
+# 动态获取当前脚本所在目录的父目录，即项目根目录 /hy-tmp/clip
+# 这样可以确保 dinov2 和 provabgs 文件夹能够被找到
+
+import os
+import sys
+current_file_dir = os.path.dirname(os.path.abspath(__file__)) # /hy-tmp/clip/astrodino
+project_root = os.path.abspath(os.path.join(current_file_dir, '..')) # /hy-tmp/clip
+sys.path.insert(0, project_root)
 import argparse
 import logging
 import math
-import os
 from functools import partial  # 用于固定函数参数
 import torch
 import wandb  # 权重与偏差可视化工具
@@ -43,7 +50,7 @@ def get_args_parser(add_help: bool = True):
         "--config-file",
         "-c",
         "--config",
-        default=f"{ASTROCLIP_ROOT}/clip_5_15/astrodino/config.yaml",
+        default=f"{ASTROCLIP_ROOT}/astrodino/config.yaml",
         metavar="FILE",
         help="path to config file",
     )
@@ -277,7 +284,7 @@ def do_train(cfg, model, run_name, group_name, resume=False):
             dir=f"{ASTROCLIP_ROOT}/outputs/astroclip_image",
             allow_val_change=True,
             settings=wandb.Settings(init_timeout=300),
-            # mode="offline"
+            mode="offline"
         )
         wandb.run.config.update(OmegaConf.to_object(cfg))
 

@@ -10,7 +10,7 @@ WARN_ONCE = True
 
 
 # TODO: change here the defaults
-ASTROCLIP_ROOT = "/hy-tmp"
+ASTROCLIP_ROOT = "/hy-tmp/clip"
 WANDB_ENTITY_NAME = "flatiron-scipt"
 
 

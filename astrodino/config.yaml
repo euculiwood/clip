@@ -60,7 +60,7 @@ ibot:
   head_hidden_dim: 2048
 train:
   batch_size_per_gpu: 72
-  dataset_path: QuasarDataset:split=train:root={ASTROCLIP_ROOT}/data/sample_0.1/train_dataset:extinction=True:probs=True
+  dataset_path: QuasarDataset:split=train:root={ASTROCLIP_ROOT}/astrodino/data/train_dataset:extinction=True:probs=True
   output_dir: .
   saveckp_freq: 20
   seed: 0

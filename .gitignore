@@ -1,0 +1,18 @@
+# 忽略数据集文件夹 (根据你的实际名称调整)
+test_dataset/
+train_dataset/
+
+# 忽略训练输出和日志
+outputs/
+logs/
+checkpoints/ # 如果有模型检查点
+
+# 忽略 WandB 相关的本地文件
+wandb/
+
+# 忽略 IDE 配置文件（包括 .idea 文件夹本身）
+.idea/
+.vscode/ # 如果你用VS Code，它也会生成配置
+
+# 忽略 Jupyter Notebook 检查点
+.ipynb_checkpoints/
