@@ -349,8 +349,8 @@ def finetune_dino_regression(args):
         for i, data in enumerate(train_loop_iterator):
             imgs = data["image"].to(device)
             labels_raw = data["z"].to(device)
-
-            labels_scaled = torch.tensor(scaler_z.transform(labels_raw.cpu().numpy()), dtype=torch.float32).to(device)
+            labels_for_scaler = labels_raw.cpu().numpy().reshape(-1, 1)
+            labels_scaled = torch.tensor(scaler_z.transform(labels_for_scaler), dtype=torch.float32).to(device)
 
             optimizer.zero_grad()
             outputs = model(imgs)
@@ -380,17 +380,17 @@ def finetune_dino_regression(args):
             for i, data in enumerate(val_loop_iterator):
                 imgs = data["image"].to(device)
                 labels_raw_batch = data["z"].to(device)
-
-                labels_scaled_batch = torch.tensor(scaler_z.transform(labels_raw_batch.cpu().numpy()), dtype=torch.float32).to(device)
+                labels_for_scaler_val = labels_raw_batch.cpu().numpy().reshape(-1, 1)
+                labels_scaled_batch = torch.tensor(scaler_z.transform(labels_for_scaler_val), dtype=torch.float32).to(device)
 
                 outputs_scaled = model(imgs)
 
                 val_preds_scaled.append(outputs_scaled.cpu().numpy())
                 val_labels_scaled.append(labels_scaled_batch.cpu().numpy())
 
-                preds_raw_batch = scaler_z.inverse_transform(outputs_scaled.cpu().numpy())
+                preds_raw_batch = scaler_z.inverse_transform(outputs_scaled.cpu().numpy().reshape(-1, 1))
                 val_preds_raw.append(preds_raw_batch)
-                val_labels_raw.append(labels_raw_batch.cpu().numpy())
+                val_labels_raw.append(labels_raw_batch.cpu().numpy().reshape(-1, 1))
 
         local_val_preds_scaled = np.concatenate(val_preds_scaled)
         local_val_labels_scaled = np.concatenate(val_labels_scaled)
@@ -478,7 +478,7 @@ if __name__ == '__main__':
                         default=os.path.join(resolved_astroclip_root, "astrodino", "data", "test_dataset"),
                         help="Path to your test dataset (Hugging Face dataset format local path).")
     parser.add_argument("--pretrained_weights_path", type=str,
-                        default="/astrodino/preweight/teacher_checkpoint.pth", # 请确认这个路径是否相对于文件系统根目录
+                        default=os.path.join(resolved_astroclip_root, "astrodino", "preweight", "teacher_checkpoint.pth"),
                         help="Full path to the DINOv2 teacher_checkpoint.pth file.")
     parser.add_argument("--dino_config_file", type=str,
                         default=os.path.join(resolved_astroclip_root, "astrodino", "config.yaml"), # 确保这里路径正确
