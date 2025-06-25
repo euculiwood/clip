@@ -261,7 +261,10 @@ def enable(*, set_cuda_current_device: bool = True, overwrite: bool = False, all
             _check_env_variable(key, value)
         os.environ[key] = value
 
-    dist.init_process_group(backend="nccl")
+    if not dist.is_initialized(): # 只有在未初始化时才调用
+        dist.init_process_group(backend="nccl")
+    else:
+        print(f"Warning: torch.distributed is already initialized on rank {dist.get_rank()}. Skipping internal DINOv2 process group initialization.")
     dist.barrier()
 
     # Finalize setup
