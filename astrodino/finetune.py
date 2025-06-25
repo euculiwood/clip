@@ -28,7 +28,6 @@ project_root = os.path.dirname(os.path.dirname(current_script_path))
 # 将项目根目录添加到 sys.path
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
-# --- 关键修改结束 ---
 
 # 设置日志
 logger = logging.getLogger("finetune_dino")
